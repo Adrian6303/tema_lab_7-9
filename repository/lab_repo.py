@@ -6,6 +6,7 @@ class InMemoryRepository:
 
         Detaliere: seminar 7
     """
+
     def __init__(self):
         # shows - multimea de seriale pe care o gestionam
         # poate fi si dictionar, este la latitudinea noastra cum stocam datele
@@ -16,7 +17,6 @@ class InMemoryRepository:
         self.__studenti = []
         self.__probleme = []
 
-
     def store_student(self, studenti):
         """
         Adauga un serial in lista
@@ -26,6 +26,7 @@ class InMemoryRepository:
         :rtype:
         """
         self.__studenti.append(studenti)
+
     def store_pbLab(self, probleme):
         """
         Adauga un serial in lista
@@ -42,6 +43,7 @@ class InMemoryRepository:
         :rtype: list of objects de tip Serial
         """
         return self.__studenti
+
     def get_all_pbLab(self):
         """
         Returneaza o lista cu toate show-urile existente
@@ -49,7 +51,10 @@ class InMemoryRepository:
         """
         return self.__probleme
 
+
 def test_store_studenti():
     pass
+
+
 def test_store_pbLab():
     pass

@@ -1,6 +1,7 @@
 from domain.entities import Student
 from domain.entities import PbLaborator
 
+
 class Console:
     def __init__(self, srv):
         """
@@ -8,6 +9,7 @@ class Console:
         :type srv: ShowService
         """
         self.__srv = srv
+
     """
     def __print_all_shows(self):
 
@@ -23,6 +25,7 @@ class Console:
                           show.getEpisoade())))
 
         """
+
     def __add_student(self):
         """
         Adauga un serial cu datele citite de la tastatura
@@ -52,7 +55,7 @@ class Console:
         try:
             added_pbLab = self.__srv.add_pbLab(nrLab_nrPb, descriere, deadline)
             print('Problema ' + str(added_pbLab.getNrLab_nrPb()) + ' : ' + str(
-                added_pbLab.getDescriere()) + '; Termen limita: '+ str(
+                added_pbLab.getDescriere()) + '; Termen limita: ' + str(
                 added_pbLab.getDeadline()), '; a fost adaugata cu succes')
         except ValueError as ve:
             print(str(ve))
@@ -73,7 +76,7 @@ class Console:
             if cmd == 'add':
                 print('Selecteaza: student, pb_lab')
                 cmd = input('Comanda este:')
-                if cmd =='student':
+                if cmd == 'student':
                     self.__add_student()
                 elif cmd == 'pb_lab':
                     self.__add_pbLab()

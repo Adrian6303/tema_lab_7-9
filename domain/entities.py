@@ -3,36 +3,39 @@ class Student:
 
     def __init__(self, studentID, nume, grup):
         """
-        Creeaza un nou serial cu titlul, anul aparitiei si numarul de episoade dat
-        :param titlu: titlul serialului
-        :type titlu: str
-        :param an_aparitie: anul aparitiei serialului
-        :type an_aparitie: int (1970-2021)
-        :param eps: numarul de episoade din serial
-        :type eps: int (>0)
+        Creeaza un nou student
+        :param studentID: id student
+        :type studentID: int
+        :param nume: nume student
+        :type nume: str
+        :param grup: numarul grupei
+        :type grup: int (>0)
         """
-        self.__studentID = studentID
-        self.__nume = nume
-        self.__grup = grup
+        self.__lista_stud = {'studentID': None, 'nume': None, 'grup': None}
+
+        self.__lista_stud['studentID'] = studentID
+        self.__lista_stud['nume'] = nume
+        self.__lista_stud['grup'] = grup
+
         Student.no_instances += 1
 
     def getStudentID(self):
-        return self.__studentID
+        return self.__lista_stud['studentID']
 
     def getNume(self):
-        return self.__nume
+        return self.__lista_stud['nume']
 
     def getGrup(self):
-        return self.__grup
+        return self.__lista_stud['grup']
 
     def setStudentID(self, value):
-        self.__studentID = value
+        self.__lista_stud['studentID'] = value
 
     def setNume(self, value):
-        self.__nume = value
+        self.__lista_stud['nume'] = value
 
     def setGrup(self, value):
-        self.__grup = value
+        self.__lista_stud['grup'] = value
 
     def __eq__(self, other):
         """
@@ -42,7 +45,7 @@ class Student:
         :return: True daca serialele sunt egale (=au acelasi titlu si acelasi an de aparitie), False altfel
         :rtype: bool
         """
-        if self.__studentID == other.getStudentID():
+        if self.__lista_stud['studentID'] == other.getStudentID():
             return True
         return False
 
@@ -51,8 +54,8 @@ class Student:
     # se mai pot suprascrie pentru o clasa in afara de __eq__ si __str__
 
     def __str__(self):
-        return "ID Student: " + self.__StudentID + '; Nume: ' + str(self.__nume) + '; Grupa: ' + str(
-            self.__grupa)
+        return "ID Student: " + str(self.__lista_stud['studentID']) + '; Nume: ' + str(
+            self.__lista_stud['nume']) + '; Grupa: ' + str(self.__lista_stud['grupa'])
 
     @staticmethod
     def getNumberOfShowObjects():
@@ -75,45 +78,57 @@ def test_create_student():
 
 
 def test_equals_student():
-    student1 = Student(895176,'Randunica Adriana', 12)
+    student1 = Student(895176, 'Randunica Adriana', 12)
     student2 = Student(895176, 'Randunica Adriana', 10)
 
     assert (student1 == student2)
 
-    student3 = Student(128626,'Randunica Adriana', 12)
+    student3 = Student(128626, 'Randunica Adriana', 12)
     assert (student1 != student3)
 
 
 test_create_student()
 test_equals_student()
 
+
 class PbLaborator:
     no_instances = 0
+    """
+    Creeaza o noua problema de laborator 
+    :param nrLab_nrPb: nr laborator si nr problema
+    :type nrLab_nrPb: str
+    :param descriere: descriere problema
+    :type descriere: str
+    :param deadline: deta limita
+    :type deadline: str
+    """
 
     def __init__(self, nrLab_nrPb, descriere, deadline):
+        self.__lista_lab = {'nr': None, 'descriere': None, 'deadLine': None}
 
-        self.__nrLab_nrPb = nrLab_nrPb
-        self.__descriere = descriere
-        self.__deadline = deadline
+        self.__lista_lab['nr'] = nrLab_nrPb
+        self.__lista_lab['descriere'] = descriere
+        self.__lista_lab['deadLine'] = deadline
+
         PbLaborator.no_instances += 1
 
     def getNrLab_nrPb(self):
-        return self.__nrLab_nrPb
+        return self.__lista_lab['nr']
 
     def getDescriere(self):
-        return self.__descriere
+        return self.__lista_lab['descriere']
 
     def getDeadline(self):
-        return self.__deadline
+        return self.__lista_lab['deadLine']
 
     def setNrLab_nrPb(self, value):
-        self.__nrLab_nrPb = value
+        self.__lista_lab['nr'] = value
 
     def setDescriere(self, value):
-        self.__descriere = value
+        self.__lista_lab['descriere'] = value
 
     def setDeadline(self, value):
-        self.__deadline = value
+        self.__lista_lab['deadLine'] = value
 
     def __eq__(self, other):
         """
@@ -123,7 +138,7 @@ class PbLaborator:
         :return: True daca serialele sunt egale (=au acelasi titlu si acelasi an de aparitie), False altfel
         :rtype: bool
         """
-        if self.__nrLab_nrPb == other.getNrLab_nrPb():
+        if self.__lista_lab['nr'] == other.getNrLab_nrPb():
             return True
         return False
 
@@ -132,8 +147,9 @@ class PbLaborator:
     # se mai pot suprascrie pentru o clasa in afara de __eq__ si __str__
 
     def __str__(self):
-        return "Nr lab si nr problema: " + str(self.__nrLab_nrPb) + '; Descriere: ' + str(self.__descriere) + '; Deadline: ' + str(
-            self.__deadline)
+        return "Nr lab si nr problema: " + str(self.__lista_lab['nr']) + '; Descriere: ' + str(
+            self.__lista_lab['descriere']) + '; Deadline: ' + str(
+            self.__lista_lab['deadline'])
 
     @staticmethod
     def getNumberOfShowObjects():

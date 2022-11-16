@@ -12,6 +12,7 @@ class LabService:
         (i.e. declansare actiune: utilizator -> ui-> obiect tip service in ui -> service -> service coordoneaza operatiile
         folosind alte obiecte (e.g. repo, validator) pentru a realiza efectiv operatia)
         """
+
     def __init__(self, repo, validator):
         """
         Initializeaza service
@@ -42,7 +43,6 @@ class LabService:
         self.__repo.store_student(s)
         return s
 
-
     def add_pbLab(self, nrLab_nrPb, descriere, deadline):
         """
         Adauga serial
@@ -70,7 +70,7 @@ class LabService:
         """
         return self.__repo.get_all_shows()
 
-    def delete_shows(self,an_inceput, an_sfarsit):
+    def delete_shows(self, an_inceput, an_sfarsit):
         pass
 
 
