@@ -39,19 +39,16 @@ class Student:
 
     def __eq__(self, other):
         """
-        Verifica egalitatea intre serialul curent si serialul other
+        Verifica egalitatea intre studentul curent si studentul other
         :param other:
-        :type other: Serial
-        :return: True daca serialele sunt egale (=au acelasi titlu si acelasi an de aparitie), False altfel
+        :type other: Student
+        :return: True daca studentii sunt egali (=au IDstudent identic), False altfel
         :rtype: bool
         """
         if self.__lista_stud['studentID'] == other.getStudentID():
             return True
         return False
 
-    # https://www.tutorialsteacher.com/python/magic-methods-in-python
-    # puteti sa cititi aici pe link-ul de mai sus ce metode
-    # se mai pot suprascrie pentru o clasa in afara de __eq__ si __str__
 
     def __str__(self):
         return "ID Student: " + str(self.__lista_stud['studentID']) + '; Nume: ' + str(
@@ -94,7 +91,7 @@ test_equals_student()
 class PbLaborator:
     no_instances = 0
     """
-    Creeaza o noua problema de laborator 
+    Creeaza o noua problema de laborator: 
     :param nrLab_nrPb: nr laborator si nr problema
     :type nrLab_nrPb: str
     :param descriere: descriere problema
@@ -132,19 +129,16 @@ class PbLaborator:
 
     def __eq__(self, other):
         """
-        Verifica egalitatea intre serialul curent si serialul other
+        Verifica egalitatea intre problema curent si problema other
         :param other:
-        :type other: Serial
-        :return: True daca serialele sunt egale (=au acelasi titlu si acelasi an de aparitie), False altfel
+        :type other: PbLaborator
+        :return: True daca problemele sunt egale (=au acelasi numar), False altfel
         :rtype: bool
         """
         if self.__lista_lab['nr'] == other.getNrLab_nrPb():
             return True
         return False
 
-    # https://www.tutorialsteacher.com/python/magic-methods-in-python
-    # puteti sa cititi aici pe link-ul de mai sus ce metode
-    # se mai pot suprascrie pentru o clasa in afara de __eq__ si __str__
 
     def __str__(self):
         return "Nr lab si nr problema: " + str(self.__lista_lab['nr']) + '; Descriere: ' + str(

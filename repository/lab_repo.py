@@ -1,10 +1,9 @@
 class InMemoryRepository:
     """
         Clasa creata cu responsabilitatea de a gestiona
-        multimea de seriale (i.e. sa ofere un depozit persistent pentru obiecte
-        de tip serial)
+        multimea de studenti si probleme (i.e. sa ofere un depozit persistent pentru obiecte
+        de tip student si pb)
 
-        Detaliere: seminar 7
     """
 
     def __init__(self):
@@ -17,37 +16,37 @@ class InMemoryRepository:
         self.__studenti = []
         self.__probleme = []
 
-    def store_student(self, studenti):
+    def store_student(self, student):
         """
-        Adauga un serial in lista
-        :param show: serialul care se adauga
-        :type show: Serial
-        :return: -; lista de seriale se modifica prin adaugarea serialului dat
+        Adauga un student in lista
+        :param student: serialul care se adauga
+        :type student: Student
+        :return: -; lista de studenti se modifica prin adaugarea studentului dat
         :rtype:
         """
-        self.__studenti.append(studenti)
+        self.__studenti.append(student)
 
-    def store_pbLab(self, probleme):
+    def store_pbLab(self, problema):
         """
         Adauga un serial in lista
-        :param show: serialul care se adauga
-        :type show: Serial
-        :return: -; lista de seriale se modifica prin adaugarea serialului dat
+        :param problema: problema care se adauga
+        :type problema: PbLaborator
+        :return: -; lista de probleme se modifica prin adaugarea problemei date
         :rtype:
         """
-        self.__probleme.append(probleme)
+        self.__probleme.append(problema)
 
     def get_all_students(self):
         """
-        Returneaza o lista cu toate show-urile existente
-        :rtype: list of objects de tip Serial
+        Returneaza o lista cu toati studenti existenti
+        :rtype: list of objects de tip Student
         """
         return self.__studenti
 
     def get_all_pbLab(self):
         """
-        Returneaza o lista cu toate show-urile existente
-        :rtype: list of objects de tip Serial
+        Returneaza o lista cu toate problemele de laborator existente
+        :rtype: list of objects de tip PbLaborator
         """
         return self.__probleme
 

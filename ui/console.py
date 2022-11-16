@@ -6,25 +6,33 @@ class Console:
     def __init__(self, srv):
         """
         Initializeaza consola
-        :type srv: ShowService
+        :type srv: LabService
         """
         self.__srv = srv
 
-    """
-    def __print_all_shows(self):
 
-        show_list = self.__srv.get_all_shows()
-        if len(show_list) == 0:
-            print('Nu exista seriale in lista.')
+    def __print_all(self):
+
+        student_list = self.__srv.get_all_students()
+        if len(student_list) == 0:
+            print('Nu exista studenti in lista.')
         else:
-            print('Lista de seriale este:')
-            for show in show_list:
-                # print(show)
-                print('Titlu serial: ', show.getTitle(), ' - An aparitie: ',
-                      str(show.getAnAparitie(), ' - Nr. episoade: ', str(
-                          show.getEpisoade())))
+            print('Lista de studenti este:')
+            for student in student_list:
+                # print(student)
+                print('Studentul ' + str(student.getNume()) + ' (ID:' + str(
+                student.getStudentID()) + ') din grupa: ' + str(student.getGrup()))
 
-        """
+        probleme_list = self.__srv.get_all_problems()
+        if len(probleme_list) == 0:
+            print('Nu exista studenti in lista.')
+        else:
+            print('Lista de studenti este:')
+            for problema in probleme_list:
+                # print(student)
+                print('Problema nr ' + str(problema.getNrLab_nrPb()) + ': ' + str(
+                    problema.getDescriere()) + ', termen limita ' + str(problema.getDeadline()))
+
 
     def __add_student(self):
         """
@@ -83,7 +91,7 @@ class Console:
                 else:
                     print('Comanda invalida.')
             elif cmd == 'show_all':
-                self.__print_all_shows()
+                self.__print_all()
             elif cmd == 'exit':
                 # this should not be here per principles of app organization
                 # added just to showcase how the static method works
@@ -91,46 +99,3 @@ class Console:
                 return
             else:
                 print('Comanda invalida.')
-
-
-"""
-def print_menu():
-    print("----------Gestiune laboratoare studenți----------")
-    print("1. Adauga")
-    print("2. Sterge")
-    print("3. Modifica")
-    print("4. Rapoarte")
-    print("5. Cautare")
-    print("6. Asignare laborator")
-    print("7. Notare laborator")
-    print("S: Statistici")
-    print("Exit: Iesi din aplicatie")
-
-
-def start():
-    finished = False
-    while not finished:
-        print_menu()
-        option = input("Optiunea dumneavoastra este: ")
-        if option == '1':
-            add_show_ui(show_manager)
-        elif option == '2':
-            delete_shows_ui(show_manager)
-        elif option == '3':
-            filter_shows_ui(get_show_list(show_manager))
-        elif option == '4':
-            undo_ui(show_manager)
-        elif option == '5':
-            undo_ui(show_manager)
-        elif option == '6':
-            undo_ui(show_manager)
-        elif option == '7':
-            undo_ui(show_manager)
-        elif option.lower() == 's':
-            print_show_list(get_show_list(show_manager))
-        elif option.lower() == 'exit':
-            finished = True
-        else:
-            print("Optiunea introdusa este invalida.")
-
-"""
