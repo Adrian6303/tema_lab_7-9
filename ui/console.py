@@ -71,7 +71,22 @@ class Console:
             print(str(ve))
 
     def __delete_student(self):
-        pass
+        id = int(input("ID-ul studentului:"))
+        try:
+            deleted_student = self.__srvS.delete_student(id)
+            print('Studentul ' + deleted_student.getNume() + ' din grupa ' + str(
+                deleted_student.getGrup()) + ' a fost sters cu succes (IDStudent=' + str(deleted_student.getStudentID()) + ').')
+        except ValueError as ve:
+            print(str(ve))
+
+    def __delete_pbLab(self):
+        nr = str(input("Nr lab si pb:"))
+        try:
+            deleted_pbLab = self.__srvL.delete_pbLab(nr)
+            print('Problema nr ' + deleted_pbLab.getNrLab_nrPb() + ' cu termen ' + str(
+                deleted_pbLab.getDeadline()) + ' a fost sters cu succes')
+        except ValueError as ve:
+            print(str(ve))
 
     def gestiune_lab_ui(self):
         # command-driven menu (just to have something different)
@@ -80,7 +95,7 @@ class Console:
         # if using Python 3.10 and bored with if statements,
         # you can try: https://learnpython.com/blog/python-match-case-statement/
         while True:
-            print('Comenzi disponibile: add, delete, edit, raport, search, asign lab, grade lab, stats, show_all, exit')
+            print('Comenzi disponibile: add, delete, edit, raport, search, asign lab, grade lab, stats, show all, exit')
             cmd = input('Comanda este:')
             cmd = cmd.lower().strip()
             if cmd == 'add':
@@ -92,7 +107,16 @@ class Console:
                     self.__add_pbLab()
                 else:
                     print('Comanda invalida.')
-            elif cmd == 'show_all':
+            elif cmd == 'delete':
+                print('Selecteaza: student, pb_lab')
+                cmd = input('Comanda este:')
+                if cmd == 'student':
+                    self.__delete_student()
+                elif cmd == 'pb_lab':
+                    self.__delete_pbLab()
+                else:
+                    print('Comanda invalida.')
+            elif cmd == 'show all':
                 self.__print_all()
             elif cmd == 'exit':
                 # this should not be here per principles of app organization

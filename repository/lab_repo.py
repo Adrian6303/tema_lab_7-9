@@ -16,6 +16,32 @@ class InMemoryRepository:
         self.__studenti = []
         self.__probleme = []
 
+    def find_student(self, id):
+        """
+        Cauta studentul cu id dat
+        :param id: id dat
+        :type id: int
+        :return: serialul cu id dat, None daca nu exista
+        :rtype: Serial
+        """
+        for student in self.__studenti:
+            if student.getStudentID() == id:
+                return student
+        return None
+
+    def find_problema(self, nr):
+        """
+        Cauta problema cu nr dat
+        :param nr: nr dat
+        :type nr: str
+        :return: problema cu nr dat, None daca nu exista
+        :rtype: PbLaborator
+        """
+        for problema in self.__probleme:
+            if problema.getNrLab_nrPb() == nr:
+                return problema
+        return None
+
     def store_student(self, student):
         """
         Adauga un student in lista
@@ -32,7 +58,7 @@ class InMemoryRepository:
         :param problema: problema care se adauga
         :type problema: PbLaborator
         :return: -; lista de probleme se modifica prin adaugarea problemei date
-        :rtype:
+        :rtype:Nu exista serial cu acest id.
         """
         self.__probleme.append(problema)
 
@@ -49,6 +75,41 @@ class InMemoryRepository:
         :rtype: list of objects de tip PbLaborator
         """
         return self.__probleme
+
+    def delete_student(self, id):
+        """
+        Sterge student dupa id
+        :param id: id-ul dat
+        :type id: int
+        :return: studentul sters
+        :rtype: Student
+        :raises: ValueError daca id-ul nu exista
+        """
+
+        student = self.find_student(id)
+        if student is None:
+            raise ValueError('Nu exista student cu acest id.')
+
+        self.__studenti.remove(student)
+        return student
+
+
+    def delete_pbLab(self, nr):
+        """
+        Sterge problema dupa nr
+        :param nr: nr dat
+        :type nr: str
+        :return: studentul sters
+        :rtype:  PbLaborator
+        :raises: ValueError daca nr nu exista
+        """
+
+        problema = self.find_problema(nr)
+        if problema is None:
+            raise ValueError('Nu exista problema cu acest nr.')
+
+        self.__probleme.remove(problema)
+        return problema
 
 
 def test_store_studenti():

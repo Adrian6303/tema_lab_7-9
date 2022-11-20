@@ -43,6 +43,18 @@ class StudentService:
         """
         return self.__repo.get_all_students()
 
+    def delete_student(self, id):
+        """
+        Sterge serialul cu id dat din lista
+        :param id: id-ul dat
+        :type id: int
+        :return: studentul sters
+        :rtype: Serial
+        :raises: ValueError daca nu exista serial cu id-ul dat
+        """
+        return self.__repo.delete_student(id)
+
+
 class LabService:
     """
         GRASP Controller (Curs 6)
@@ -90,10 +102,17 @@ class LabService:
         :rtype: list of objects de tip PbLaborator
         """
         return self.__repo.get_all_problems()
-    """  de intrebat ce nu merge"""
 
-    def delete_shows(self, an_inceput, an_sfarsit):
-        pass
+    def delete_pbLab(self, nr):
+        """
+        Sterge serialul cu id dat din lista
+        :param nr: numarul dat
+        :type nr: str
+        :return: problema stearsa
+        :rtype: PbLaborator
+        :raises: ValueError daca nu exista problema cu nr dat
+        """
+        return self.__repo.delete_pbLab(nr)
 
 
 def test_add_student():
