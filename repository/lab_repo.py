@@ -43,7 +43,7 @@ class InMemoryRepository:
         """
         return self.__studenti
 
-    def get_all_pbLab(self):
+    def get_all_problems(self):
         """
         Returneaza o lista cu toate problemele de laborator existente
         :rtype: list of objects de tip PbLaborator

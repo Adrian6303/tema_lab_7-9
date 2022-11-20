@@ -3,17 +3,19 @@ from domain.entities import PbLaborator
 
 
 class Console:
-    def __init__(self, srv):
+    def __init__(self, srvL, srvS):
         """
         Initializeaza consola
-        :type srv: LabService
+        :type srvL: LabService
+        :type srvS: StudentService
         """
-        self.__srv = srv
+        self.__srvL = srvL
+        self.__srvS = srvS
 
 
     def __print_all(self):
 
-        student_list = self.__srv.get_all_students()
+        student_list = self.__srvS.get_all_students()
         if len(student_list) == 0:
             print('Nu exista studenti in lista.')
         else:
@@ -23,11 +25,11 @@ class Console:
                 print('Studentul ' + str(student.getNume()) + ' (ID:' + str(
                 student.getStudentID()) + ') din grupa: ' + str(student.getGrup()))
 
-        probleme_list = self.__srv.get_all_problems()
+        probleme_list = self.__srvL.get_all_problems()
         if len(probleme_list) == 0:
-            print('Nu exista studenti in lista.')
+            print('Nu exista probleme in lista.')
         else:
-            print('Lista de studenti este:')
+            print('Lista de probleme este:')
             for problema in probleme_list:
                 # print(student)
                 print('Problema nr ' + str(problema.getNrLab_nrPb()) + ': ' + str(
@@ -48,7 +50,7 @@ class Console:
             return
 
         try:
-            added_student = self.__srv.add_student(id, nume, grupa)
+            added_student = self.__srvS.add_student(id, nume, grupa)
             print('Studentul ' + added_student.getNume() + ' (ID:' + str(
                 added_student.getStudentID()) + ') a fost adaugat cu succes.')
         except ValueError as ve:
@@ -61,7 +63,7 @@ class Console:
         deadline = str(input("Termenul limita:"))
 
         try:
-            added_pbLab = self.__srv.add_pbLab(nrLab_nrPb, descriere, deadline)
+            added_pbLab = self.__srvL.add_pbLab(nrLab_nrPb, descriere, deadline)
             print('Problema ' + str(added_pbLab.getNrLab_nrPb()) + ' : ' + str(
                 added_pbLab.getDescriere()) + '; Termen limita: ' + str(
                 added_pbLab.getDeadline()), '; a fost adaugata cu succes')
@@ -78,7 +80,7 @@ class Console:
         # if using Python 3.10 and bored with if statements,
         # you can try: https://learnpython.com/blog/python-match-case-statement/
         while True:
-            print('Comenzi disponibile: add, delete, edit, raport, search, asign lab, grade lab, stats, exit')
+            print('Comenzi disponibile: add, delete, edit, raport, search, asign lab, grade lab, stats, show_all, exit')
             cmd = input('Comanda este:')
             cmd = cmd.lower().strip()
             if cmd == 'add':

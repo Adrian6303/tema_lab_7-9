@@ -4,15 +4,7 @@ from domain.validators import Validator
 from repository.lab_repo import InMemoryRepository
 
 
-class LabService:
-    """
-        GRASP Controller (Curs 6)
-        Responsabil de efectuarea operatiilor cerute de utilizator
-        Coordoneaza operatiile necesare pentru a realiza actiunea declansata de utilizator
-        (i.e. declansare actiune: utilizator -> ui-> obiect tip service in ui -> service -> service coordoneaza operatiile
-        folosind alte obiecte (e.g. repo, validator) pentru a realiza efectiv operatia)
-        """
-
+class StudentService:
     def __init__(self, repo, validator):
         """
         Initializeaza service
@@ -43,6 +35,35 @@ class LabService:
         self.__repo.store_student(s)
         return s
 
+    def get_all_students(self):
+        """
+        Returneaza o lista cu toati studenti disponibili
+        :return: lista de studenti disponibili
+        :rtype: list of objects de tip Student
+        """
+        return self.__repo.get_all_students()
+
+class LabService:
+    """
+        GRASP Controller (Curs 6)
+        Responsabil de efectuarea operatiilor cerute de utilizator
+        Coordoneaza operatiile necesare pentru a realiza actiunea declansata de utilizator
+        (i.e. declansare actiune: utilizator -> ui-> obiect tip service in ui -> service -> service coordoneaza operatiile
+        folosind alte obiecte (e.g. repo, validator) pentru a realiza efectiv operatia)
+        """
+
+    def __init__(self, repo, validator):
+        """
+        Initializeaza service
+        :param repo: obiect de tip repo care ne ajuta sa gestionam multimea de seriale
+        :type repo: InMemoryRepository
+        :param validator: validator pentru verificarea serialelor
+        :type validator: ShowValidator
+        """
+        self.__repo = repo
+        self.__validator = validator
+
+
     def add_pbLab(self, nrLab_nrPb, descriere, deadline):
         """
         Adauga pbLab
@@ -62,14 +83,6 @@ class LabService:
         self.__repo.store_pbLab(p)
         return p
 
-    def get_all_students(self):
-        """
-        Returneaza o lista cu toati studenti disponibili
-        :return: lista de studenti disponibili
-        :rtype: list of objects de tip Student
-        """
-        return self.__repo.get_all_students()
-
     def get_all_problems(self):
         """
         Returneaza o lista cu toate problemele disponibile
@@ -86,7 +99,7 @@ class LabService:
 def test_add_student():
     repo = InMemoryRepository()
     validator = Validator()
-    test_srv = LabService(repo, validator)
+    test_srv = StudentService(repo, validator)
 
     added_student = test_srv.add_student(545677, 'Tractoreanu Leonardo', 12)
     assert (added_student.getStudentID() == 545677)
