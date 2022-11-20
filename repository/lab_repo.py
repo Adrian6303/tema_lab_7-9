@@ -21,8 +21,8 @@ class InMemoryRepository:
         Cauta studentul cu id dat
         :param id: id dat
         :type id: int
-        :return: serialul cu id dat, None daca nu exista
-        :rtype: Serial
+        :return: studentul cu id dat, None daca nu exista
+        :rtype: Student
         """
         for student in self.__studenti:
             if student.getStudentID() == id:
@@ -110,6 +110,45 @@ class InMemoryRepository:
 
         self.__probleme.remove(problema)
         return problema
+    def edit_student(self,id, modified_student):
+        """
+                Modifica datele studentului cu id dat
+                :param id: id dat
+                :type id: int
+                :param modified_student: studentul-ul cu datele noi
+                :type modified_student: Student
+                :return: studentul-ul modificat
+                :rtype: Student
+                """
+        student = self.find_student(id)
+        if student is None:
+            raise ValueError('Nu exista student cu acest id.')
+
+        self.delete_student(id)
+        self.store_student(modified_student)
+
+        return modified_student
+
+    def edit_pbLab(self,nr, modified_problem):
+        """
+                Modifica datele studentului cu id dat
+                :param nr: nr dat
+                :type nr: str
+                :param modified_problem: studentul-ul cu datele noi
+                :type modified_problem: PbLaborator
+                :return: problema modificata
+                :rtype: PbLaborator
+                """
+        problem = self.find_problema(nr)
+        if problem is None:
+            raise ValueError('Nu exista problema cu acest nr.')
+
+        self.delete_pbLab(nr)
+        self.store_pbLab(modified_problem)
+
+        return modified_problem
+
+
 
 
 def test_store_studenti():

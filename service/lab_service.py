@@ -54,6 +54,26 @@ class StudentService:
         """
         return self.__repo.delete_student(id)
 
+    def edit_student(self, id, nume, grupa):
+        """
+                Modifica datele studentului cu id dat
+                :param id: id-ul serialului de modificat
+                :type id: int
+                :param nume: noul titlu al serialului
+                :type nume: str
+                :param grupa: noul an de aparitie al serialului
+                :type grupa: int
+                :return: studentul modificat
+                :rtype:Student
+                :raises: ValueError daca noile date nu sunt valide, sau nu exista student cu id dat
+                """
+        s = Student(id, nume,grupa)
+
+        self.__validator.validate_student(s)
+        return self.__repo.edit_student(id, s)
+
+
+
 
 class LabService:
     """
@@ -113,6 +133,24 @@ class LabService:
         :raises: ValueError daca nu exista problema cu nr dat
         """
         return self.__repo.delete_pbLab(nr)
+
+    def edit_pbLab(self, nr, descriere, deadline):
+        """
+                        Modifica datele problemei cu id dat
+                        :param nr: nr problemei de modificat
+                        :type nr: str
+                        :param descriere: noua descriere a problemei
+                        :type descriere: str
+                        :param deadline: noul termen limita a problemei
+                        :type deadline: int
+                        :return: problema modificata
+                        :rtype:PbLaborator
+                        :raises: ValueError daca noile date nu sunt valide, sau nu exista problema cu nr dat
+                        """
+        pb = PbLaborator(nr, descriere, deadline)
+
+        self.__validator.validate_pbLab(pb)
+        return self.__repo.edit_pbLab(nr, pb)
 
 
 def test_add_student():

@@ -88,6 +88,36 @@ class Console:
         except ValueError as ve:
             print(str(ve))
 
+    def __edit_student(self):
+        id = int(input('ID-ul studentului:'))
+        nume = input("Numele studentului:")
+
+        try:
+            grupa = int(input("Grupa din care face parte studentul:"))
+        except ValueError:
+            print('Grupa trebuie sa fie un numar.')
+            return
+
+        try:
+            modified_student = self.__srvS.edit_student(id, nume, grupa)
+            print('Studentul ' + modified_student.getNume() + ' (' + str(
+                modified_student.getStudentID()) + ') a fost modificat cu succes.')
+        except ValueError as ve:
+            print(str(ve))
+
+    def __edit_pbLab(self):
+        nr = str(input('Nr lab si pb:'))
+        descriere = str(input("Descrierea problemei:"))
+        deadline = str(input("Termenul limita:"))
+
+        try:
+            modified_problem = self.__srvL.edit_pbLab(nr, descriere, deadline)
+            print('Problema ' + modified_problem.getNrLab_nrPb() + ' cu termen limita ' + str(
+                modified_problem.getDeadline()) + ' a fost modificat cu succes.')
+        except ValueError as ve:
+            print(str(ve))
+
+
     def gestiune_lab_ui(self):
         # command-driven menu (just to have something different)
         # Lab7-9 oricare varianta (print-menu + optiuni/comenzi) este ok
@@ -116,12 +146,22 @@ class Console:
                     self.__delete_pbLab()
                 else:
                     print('Comanda invalida.')
+            elif cmd =='edit':
+                print('Selecteaza: student, pb_lab')
+                cmd = input('Comanda este:')
+                if cmd == 'student':
+                    self.__edit_student()
+                elif cmd == 'pb_lab':
+                    self.__edit_pbLab()
+                else:
+                    print('Comanda invalida.')
             elif cmd == 'show all':
                 self.__print_all()
             elif cmd == 'exit':
                 # this should not be here per principles of app organization
                 # added just to showcase how the static method works
-                print("Total number of show objects created (including tests):", Student.getNumberOfShowObjects())
+                print("Total number of student objects created (including tests):", Student.getNumberOfStudentObjects())
+                print("Total number of PbLaborator objects created (including tests):", PbLaborator.getNumberOfProblemObjects())
                 return
             else:
                 print('Comanda invalida.')

@@ -55,7 +55,7 @@ class Student:
             self.__lista_stud['nume']) + '; Grupa: ' + str(self.__lista_stud['grupa'])
 
     @staticmethod
-    def getNumberOfShowObjects():
+    def getNumberOfStudentObjects():
         return Student.no_instances
 
 
@@ -146,8 +146,8 @@ class PbLaborator:
             self.__lista_lab['deadline'])
 
     @staticmethod
-    def getNumberOfShowObjects():
-        return Student.no_instances
+    def getNumberOfProblemObjects():
+        return PbLaborator.no_instances
 
 
 def test_create_PbLaborator():
