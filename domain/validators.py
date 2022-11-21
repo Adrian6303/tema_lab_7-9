@@ -18,8 +18,16 @@ class Validator:
 
     def validate_pbLab(self, pbLab):
         errors = []
-        if len(pbLab.getNrLab_nrPb()) < 3 or len(pbLab.getNrLab_nrPb()) > 5:
-            errors.append('Numarul problemei trebuie sa fie de forma x_y cu max 2 cifre.')
+        nr=pbLab.getNrLab_nrPb()
+        try:
+            l=nr.split('_')
+            if int(l[0]) < 1 or int(l[0]) > 20:
+                errors.append('Nr laboratorului nu este din intervalul [1,20].')
+            if int(l[1]) < 1 or int(l[1]) > 100:
+                errors.append('Nr problemei nu este din intervalul [1,100].')
+        except IndexError:
+            errors.append('Numarul problemei nu este de forma corecta.')
+
         if len(pbLab.getDescriere()) < 3:
             errors.append('Descrierea trebuie sa aiba cel putin 5 litere.')
         if len(pbLab.getDeadline()) < 5 or len(pbLab.getDeadline()) > 15:
@@ -41,7 +49,6 @@ class Validator:
         errors =[]
         try:
             l=nr.split('_')
-            print(str(l[0])+" "+ str(l[1]))
             if int(l[0]) < 1 or int(l[0]) > 20:
                 errors.append('Nr laboratorului nu este din intervalul [1,20].')
             if int(l[1]) < 1 or int(l[1]) > 100:
