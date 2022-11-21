@@ -138,7 +138,7 @@ class InMemoryRepository:
                 :type modified_problem: PbLaborator
                 :return: problema modificata
                 :rtype: PbLaborator
-                """
+        """
         problem = self.find_problema(nr)
         if problem is None:
             raise ValueError('Nu exista problema cu acest nr.')
@@ -147,6 +147,34 @@ class InMemoryRepository:
         self.store_pbLab(modified_problem)
 
         return modified_problem
+
+    def search_student(self, id):
+        """
+            Cauta studentul cu id-ul dat
+            :param id: id-ul studentului de cautat
+            :type id: int
+            :return: studentul cautat
+            :rtype:Student
+            :raises: ValueError daca noile date nu sunt valide, sau nu exista student cu id dat
+        """
+        student = self.find_student(id)
+        if student is None:
+            raise ValueError('Nu exista student cu acest id.')
+        return student
+
+    def search_pbLab(self, nr):
+        """
+            Cauta problema cu nr-ul dat
+            :param nr: nr-ul problemei de cautat
+            :type nr: str
+            :return: problema cautata
+            :rtype:PbLaborator
+            :raises: ValueError daca noile date nu sunt valide, sau nu exista problema cu nr dat
+        """
+        problema = self.find_problema(nr)
+        if problema is None:
+            raise ValueError('Nu exista problema cu acest nr.')
+        return problema
 
 
 

@@ -52,6 +52,7 @@ class StudentService:
         :rtype: Serial
         :raises: ValueError daca nu exista serial cu id-ul dat
         """
+        self.__validator.validate_StudentID(id)
         return self.__repo.delete_student(id)
 
     def edit_student(self, id, nume, grupa):
@@ -72,6 +73,17 @@ class StudentService:
         self.__validator.validate_student(s)
         return self.__repo.edit_student(id, s)
 
+    def search_student(self, id):
+        """
+            Cauta studentul cu id-ul dat
+            :param id: id-ul studentului cautat
+            :type id: int
+            :return: studentul cautat
+            :rtype:Student
+            :raises: ValueError daca noile date nu sunt valide, sau nu exista student cu id dat
+        """
+        self.__validator.validate_StudentID(id)
+        return self.__repo.search_student(id)
 
 
 
@@ -132,6 +144,7 @@ class LabService:
         :rtype: PbLaborator
         :raises: ValueError daca nu exista problema cu nr dat
         """
+        self.__validator.validate_NrLab_nrPb(nr)
         return self.__repo.delete_pbLab(nr)
 
     def edit_pbLab(self, nr, descriere, deadline):
@@ -151,6 +164,18 @@ class LabService:
 
         self.__validator.validate_pbLab(pb)
         return self.__repo.edit_pbLab(nr, pb)
+
+    def search_pbLab(self, nr):
+        """
+            Cauta problema cu nr-ul dat
+            :param nr: nr-ul problemei
+            :type nr: str
+            :return: problema cautata
+            :rtype: PbLaborator
+            :raises: ValueError daca noile date nu sunt valide, sau nu exista problema cu nr dat
+        """
+        self.__validator.validate_NrLab_nrPb(nr)
+        return self.__repo.search_pbLab(nr)
 
 
 def test_add_student():

@@ -117,6 +117,26 @@ class Console:
         except ValueError as ve:
             print(str(ve))
 
+    def __search_student(self):
+        id = int(input('ID-ul studentului:'))
+
+        try:
+            searched_student = self.__srvS.search_student(id)
+            print('Studentul ' + searched_student.getNume() + ' (ID: ' + str(
+                searched_student.getStudentID()) + ') din grupa '+ str(
+                searched_student.getGrup()))
+        except ValueError as ve:
+            print(str(ve))
+    def __search_pbLab(self):
+        nr = input('Nr-ul problemei:')
+
+        try:
+            searched_problem = self.__srvL.search_pbLab(nr)
+            print('Problema nr' + searched_problem.getNrLab_nrPb() + ' cu termen limita  ' + str(
+                searched_problem.getDeadline()) + ': '+ str(searched_problem.getDescriere()))
+        except ValueError as ve:
+            print(str(ve))
+
 
     def gestiune_lab_ui(self):
         # command-driven menu (just to have something different)
@@ -125,7 +145,7 @@ class Console:
         # if using Python 3.10 and bored with if statements,
         # you can try: https://learnpython.com/blog/python-match-case-statement/
         while True:
-            print('Comenzi disponibile: add, delete, edit, raport, search, asign lab, grade lab, stats, show all, exit')
+            print('Comenzi disponibile: add, delete, edit, search, asign lab, grade lab, stats, show all, exit')
             cmd = input('Comanda este:')
             cmd = cmd.lower().strip()
             if cmd == 'add':
@@ -153,6 +173,15 @@ class Console:
                     self.__edit_student()
                 elif cmd == 'pb_lab':
                     self.__edit_pbLab()
+                else:
+                    print('Comanda invalida.')
+            elif cmd =='search':
+                print('Selecteaza: student, pb_lab')
+                cmd = input('Comanda este:')
+                if cmd == 'student':
+                    self.__search_student()
+                elif cmd == 'pb_lab':
+                    self.__search_pbLab()
                 else:
                     print('Comanda invalida.')
             elif cmd == 'show all':

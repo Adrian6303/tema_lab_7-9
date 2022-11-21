@@ -29,6 +29,31 @@ class Validator:
             errors_string = '\n'.join(errors)
             raise ValueError(errors_string)
 
+    def validate_StudentID(self, id):
+        errors =[]
+        if id < 100000 or id >= 1000000:
+            errors.append('Id-ul studentului trebuie sa aiba mai mult de 6 cifre.')
+        if len(errors) > 0:
+            errors_string = '\n'.join(errors)
+            raise ValueError(errors_string)
+
+    def validate_NrLab_nrPb(self, nr):
+        errors =[]
+        try:
+            l=nr.split('_')
+            print(str(l[0])+" "+ str(l[1]))
+            if int(l[0]) < 1 or int(l[0]) > 20:
+                errors.append('Nr laboratorului nu este din intervalul [1,20].')
+            if int(l[1]) < 1 or int(l[1]) > 100:
+                errors.append('Nr problemei nu este din intervalul [1,100].')
+            if len(errors) > 0:
+                errors_string = '\n'.join(errors)
+                raise ValueError(errors_string)
+        except IndexError:
+            errors.append('Numarul nu este de forma corecta.')
+            errors_string = '\n'.join(errors)
+            raise ValueError(errors_string)
+
 
 def test_student_validator():
     test_validator = Validator()
