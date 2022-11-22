@@ -3,7 +3,7 @@ from domain.entities import PbLaborator
 
 
 class Console:
-    def __init__(self, srvL, srvS):
+    def __init__(self, srvL, srvS, srvR):
         """
         Initializeaza consola
         :type srvL: LabService
@@ -11,7 +11,7 @@ class Console:
         """
         self.__srvL = srvL
         self.__srvS = srvS
-
+        self.__srvR = srvR
 
     def __print_all(self):
 
@@ -23,7 +23,7 @@ class Console:
             for student in student_list:
                 # print(student)
                 print('Studentul ' + str(student.getNume()) + ' (ID:' + str(
-                student.getStudentID()) + ') din grupa: ' + str(student.getGrup()))
+                    student.getStudentID()) + ') din grupa: ' + str(student.getGrup()))
 
         probleme_list = self.__srvL.get_all_problems()
         if len(probleme_list) == 0:
@@ -34,7 +34,6 @@ class Console:
                 # print(student)
                 print('Problema nr ' + str(problema.getNrLab_nrPb()) + ': ' + str(
                     problema.getDescriere()) + ', termen limita ' + str(problema.getDeadline()))
-
 
     def __add_student(self):
         """
@@ -75,7 +74,8 @@ class Console:
         try:
             deleted_student = self.__srvS.delete_student(id)
             print('Studentul ' + deleted_student.getNume() + ' din grupa ' + str(
-                deleted_student.getGrup()) + ' a fost sters cu succes (IDStudent=' + str(deleted_student.getStudentID()) + ').')
+                deleted_student.getGrup()) + ' a fost sters cu succes (IDStudent=' + str(
+                deleted_student.getStudentID()) + ').')
         except ValueError as ve:
             print(str(ve))
 
@@ -123,20 +123,49 @@ class Console:
         try:
             searched_student = self.__srvS.search_student(id)
             print('Studentul ' + searched_student.getNume() + ' (ID: ' + str(
-                searched_student.getStudentID()) + ') din grupa '+ str(
+                searched_student.getStudentID()) + ') din grupa ' + str(
                 searched_student.getGrup()))
         except ValueError as ve:
             print(str(ve))
+
     def __search_pbLab(self):
         nr = input('Nr-ul problemei:')
 
         try:
             searched_problem = self.__srvL.search_pbLab(nr)
             print('Problema nr' + searched_problem.getNrLab_nrPb() + ' cu termen limita  ' + str(
-                searched_problem.getDeadline()) + ': '+ str(searched_problem.getDescriere()))
+                searched_problem.getDeadline()) + ': ' + str(searched_problem.getDescriere()))
         except ValueError as ve:
             print(str(ve))
 
+    def __random_student(self):
+        """
+        Genereaza un student random
+        """
+        nr = int(input("Numar studenti random:"))
+
+        try:
+            for i in range(nr):
+                random_student = self.__srvR.random_student()
+                print('Studentul ' + random_student.getNume() + ' (ID:' + str(
+                    random_student.getStudentID()) + ') a fost adaugat cu succes.')
+        except ValueError as ve:
+            print(str(ve))
+
+    def __random_pbLab(self):
+        """
+        Genereaza un problema random
+        """
+        nr = int(input("Numar probleme random:"))
+
+        try:
+            for i in range(nr):
+                random_problem = self.__srvR.random_pbLab()
+                print('Problema nr ' + random_problem.getNrLab_nrPb() + ' cu termen limita ' + str(
+                    random_problem.getDeadline()) + ' : ' + str(
+                    random_problem.getDescriere()))
+        except ValueError as ve:
+            print(str(ve))
 
     def gestiune_lab_ui(self):
         # command-driven menu (just to have something different)
@@ -145,7 +174,7 @@ class Console:
         # if using Python 3.10 and bored with if statements,
         # you can try: https://learnpython.com/blog/python-match-case-statement/
         while True:
-            print('Comenzi disponibile: add, delete, edit, search, asign lab, grade lab, stats, show all, exit')
+            print('Comenzi disponibile: add, delete, edit, search, asign lab, grade lab, stats, random, show all, exit')
             cmd = input('Comanda este:')
             cmd = cmd.lower().strip()
             if cmd == 'add':
@@ -166,7 +195,7 @@ class Console:
                     self.__delete_pbLab()
                 else:
                     print('Comanda invalida.')
-            elif cmd =='edit':
+            elif cmd == 'edit':
                 print('Selecteaza: student, pb_lab')
                 cmd = input('Comanda este:')
                 if cmd == 'student':
@@ -175,7 +204,7 @@ class Console:
                     self.__edit_pbLab()
                 else:
                     print('Comanda invalida.')
-            elif cmd =='search':
+            elif cmd == 'search':
                 print('Selecteaza: student, pb_lab')
                 cmd = input('Comanda este:')
                 if cmd == 'student':
@@ -184,13 +213,23 @@ class Console:
                     self.__search_pbLab()
                 else:
                     print('Comanda invalida.')
+            elif cmd == 'random':
+                print('Selecteaza: student, pb_lab')
+                cmd = input('Comanda este:')
+                if cmd == 'student':
+                    self.__random_student()
+                elif cmd == 'pb_lab':
+                    self.__random_pbLab()
+                else:
+                    print('Comanda invalida.')
             elif cmd == 'show all':
                 self.__print_all()
             elif cmd == 'exit':
                 # this should not be here per principles of app organization
                 # added just to showcase how the static method works
                 print("Total number of student objects created (including tests):", Student.getNumberOfStudentObjects())
-                print("Total number of PbLaborator objects created (including tests):", PbLaborator.getNumberOfProblemObjects())
+                print("Total number of PbLaborator objects created (including tests):",
+                      PbLaborator.getNumberOfProblemObjects())
                 return
             else:
                 print('Comanda invalida.')
