@@ -71,7 +71,7 @@ class StudentService:
         s = Student(id, nume,grupa)
 
         self.__validator.validate_student(s)
-        return self.__repo.edit_student(id, s)
+        return self.__repo.edit_student(id, nume, grupa)
 
     def search_student(self, id):
         """
@@ -163,7 +163,7 @@ class LabService:
         pb = PbLaborator(nr, descriere, deadline)
 
         self.__validator.validate_pbLab(pb)
-        return self.__repo.edit_pbLab(nr, pb)
+        return self.__repo.edit_pbLab(nr, descriere, deadline)
 
     def search_pbLab(self, nr):
         """
