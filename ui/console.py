@@ -100,7 +100,7 @@ class Console:
 
         try:
             modified_student = self.__srvS.edit_student(id, nume, grupa)
-            print('Studentul ' + modified_student.getNume() + ' (' + str(
+            print('Studentul ' + modified_student.getNume() + ' (ID: ' + str(
                 modified_student.getStudentID()) + ') a fost modificat cu succes.')
         except ValueError as ve:
             print(str(ve))
