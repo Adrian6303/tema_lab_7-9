@@ -1,3 +1,6 @@
+from domain.entities import Student
+from domain.entities import PbLaborator
+
 class InMemoryRepository:
     """
         Clasa creata cu responsabilitatea de a gestiona
@@ -110,43 +113,49 @@ class InMemoryRepository:
 
         self.__probleme.remove(problema)
         return problema
-    def edit_student(self,id, modified_student):
+    def edit_student(self,id, nume, grupa):
         """
                 Modifica datele studentului cu id dat
                 :param id: id dat
                 :type id: int
-                :param modified_student: studentul-ul cu datele noi
-                :type modified_student: Student
+                :param nume: numele studentului
+                :type nume: str
+                :param grupa: nr grupei studentului
+                :type grupa: int
                 :return: studentul-ul modificat
                 :rtype: Student
+                :raises: ValueError daca id-ul nu exista
                 """
+
         student = self.find_student(id)
         if student is None:
             raise ValueError('Nu exista student cu acest id.')
+        else:
+            student.setNume(nume)
+            student.setGrup(grupa)
 
-        self.delete_student(id)
-        self.store_student(modified_student)
+        return student
 
-        return modified_student
-
-    def edit_pbLab(self,nr, modified_problem):
+    def edit_pbLab(self,nr, descriere, deadline):
         """
-                Modifica datele studentului cu id dat
+                Modifica datele problemei cu id dat
                 :param nr: nr dat
                 :type nr: str
-                :param modified_problem: studentul-ul cu datele noi
-                :type modified_problem: PbLaborator
+                :param descriere: descrierea problemei
+                :type descriere: str
+                :param deadline: deadline-ul problemei
+                :type deadline: str
                 :return: problema modificata
                 :rtype: PbLaborator
         """
         problem = self.find_problema(nr)
         if problem is None:
             raise ValueError('Nu exista problema cu acest nr.')
+        else:
+            problem.setDeadline(deadline)
+            problem.setDescriere(descriere)
 
-        self.delete_pbLab(nr)
-        self.store_pbLab(modified_problem)
-
-        return modified_problem
+        return problem
 
     def search_student(self, id):
         """
@@ -179,7 +188,10 @@ class InMemoryRepository:
 
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9b056e2 (teste + edit fix)
 def setup_test_repo():
     student1 = Student(516728, 'Franz', 1)
     student2 = Student(678192, 'Albert', 12)
@@ -352,4 +364,3 @@ def test_store_problem():
         assert False
     except ValueError:
         assert True
-
