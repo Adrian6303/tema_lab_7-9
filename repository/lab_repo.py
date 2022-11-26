@@ -1,3 +1,6 @@
+from domain.entities import Student
+from domain.entities import PbLaborator
+
 class InMemoryRepository:
     """
         Clasa creata cu responsabilitatea de a gestiona
@@ -110,43 +113,49 @@ class InMemoryRepository:
 
         self.__probleme.remove(problema)
         return problema
-    def edit_student(self,id, modified_student):
+    def edit_student(self,id, nume, grupa):
         """
                 Modifica datele studentului cu id dat
                 :param id: id dat
                 :type id: int
-                :param modified_student: studentul-ul cu datele noi
-                :type modified_student: Student
+                :param nume: numele studentului
+                :type nume: str
+                :param grupa: nr grupei studentului
+                :type grupa: int
                 :return: studentul-ul modificat
                 :rtype: Student
+                :raises: ValueError daca id-ul nu exista
                 """
+
         student = self.find_student(id)
         if student is None:
             raise ValueError('Nu exista student cu acest id.')
+        else:
+            student.setNume(nume)
+            student.setGrup(grupa)
 
-        self.delete_student(id)
-        self.store_student(modified_student)
+        return student
 
-        return modified_student
-
-    def edit_pbLab(self,nr, modified_problem):
+    def edit_pbLab(self,nr, descriere, deadline):
         """
-                Modifica datele studentului cu id dat
+                Modifica datele problemei cu id dat
                 :param nr: nr dat
                 :type nr: str
-                :param modified_problem: studentul-ul cu datele noi
-                :type modified_problem: PbLaborator
+                :param descriere: descrierea problemei
+                :type descriere: str
+                :param deadline: deadline-ul problemei
+                :type deadline: str
                 :return: problema modificata
                 :rtype: PbLaborator
         """
         problem = self.find_problema(nr)
         if problem is None:
             raise ValueError('Nu exista problema cu acest nr.')
+        else:
+            problem.setDeadline(deadline)
+            problem.setDescriere(descriere)
 
-        self.delete_pbLab(nr)
-        self.store_pbLab(modified_problem)
-
-        return modified_problem
+        return problem
 
     def search_student(self, id):
         """
@@ -179,9 +188,175 @@ class InMemoryRepository:
 
 
 
-def test_store_studenti():
-    pass
+def setup_test_repo():
+    student1 = Student(516728, 'Franz', 1)
+    student2 = Student(678192, 'Albert', 12)
+    student3 = Student(321312, 'Leonardo', 6)
+    student4 = Student(523455, 'Felix', 8)
+    student5 = Student(890782, 'Marian', 3)
+    student6 = Student(756712, 'Dorel', 6)
+    student7 = Student(456189, 'Tiplache', 16)
+    student8 = Student(671122, 'Gabi', 4)
+    student9 = Student(562824, 'Hans', 9)
+    student10 = Student(789012, 'Fernando', 10)
+
+    pbLab1 = PbLaborator('1_2', 'ugahsd', '1 mai')
+    pbLab2 = PbLaborator('2_2', 'asdasdsda', '12 martie')
+    pbLab3 = PbLaborator('3_5', 'fsdfsdardo', '6 iunie')
+    pbLab4 = PbLaborator('6_6', 'adssadasdasx', '8 iulie')
+    pbLab5 = PbLaborator('3_7', 'Masdasdasdan', '3 decembrie')
+    pbLab6 = PbLaborator('9_3', 'Dasdasddael', '6 ianuarie')
+    pbLab7 = PbLaborator('2_10', 'Tsadsadache', '16 mai')
+    pbLab8 = PbLaborator('7_2', 'asdsadasdsai', '4 aprilie')
+    pbLab9 = PbLaborator('4_6', 'asdasdasdsas', '9 iulie')
+    pbLab10 = PbLaborator('1_8', 'asdsdadaando', '10 octombrie')
 
 
-def test_store_pbLab():
-    pass
+
+
+    test_repo = InMemoryRepository()
+    test_repo.store_student(student1)
+    test_repo.store_student(student2)
+    test_repo.store_student(student3)
+    test_repo.store_student(student4)
+    test_repo.store_student(student5)
+    test_repo.store_student(student6)
+    test_repo.store_student(student7)
+    test_repo.store_student(student8)
+    test_repo.store_student(student9)
+    test_repo.store_student(student10)
+
+    test_repo.store_pbLab(pbLab1)
+    test_repo.store_pbLab(pbLab2)
+    test_repo.store_pbLab(pbLab3)
+    test_repo.store_pbLab(pbLab4)
+    test_repo.store_pbLab(pbLab5)
+    test_repo.store_pbLab(pbLab6)
+    test_repo.store_pbLab(pbLab7)
+    test_repo.store_pbLab(pbLab8)
+    test_repo.store_pbLab(pbLab9)
+    test_repo.store_pbLab(pbLab10)
+
+    return test_repo
+
+
+def test_find():
+    test_repo = setup_test_repo()
+
+    s = test_repo.find_student(321312)
+    assert (s.getNume() == 'Leonardo')
+    assert (s.getGrup() == 6)
+
+    p = test_repo.find_problema('4_6')
+    assert (p.getDescriere() == 'asdasdasdsas')
+    assert (p.getDeadline() == '9 iulie')
+
+    s1 = test_repo.find_student(567555)
+    assert (s1 is None)
+
+    p1 = test_repo.find_problema('12_12')
+    assert (p1 is None)
+
+
+
+
+def test_get_all_students():
+    test_repo1 = setup_test_repo()
+    crt_students = test_repo1.get_all_students()
+    assert (type(crt_students) == list)
+    assert (len(crt_students) == 10)
+
+    test_repo1.delete_student(890782)
+    test_repo1.delete_student(671122)
+
+    crt_students = test_repo1.get_all_students()
+    assert (len(crt_students) == 8)
+
+    test_repo1.store_student(Student(577990, 'Mihai', 5))
+    crt_students = test_repo1.get_all_students()
+    assert (len(crt_students) == 9)
+
+    # not a good test if we don't know if the show is stored on the last position or not
+    # e.g. what is returned from get_all_shows for RepoDict?
+    assert (test_repo1.get_all_students()[-1].getNume() == 'Mihai')
+    assert (test_repo1.get_all_students()[-1].getGrupa() == 5)
+
+    test_repo1.edit_student(577990, 'Raphael', 3)
+
+    # is it always the case that the updated show keeps its position?
+    # e.g. implement update as delete(old_show) + insert(new_show)
+
+    assert (test_repo1.get_all_students()[-1].getGrupa() == 3)
+    assert (test_repo1.get_all_students()[-1].getNume() == 'Raphael')
+    crt_students = test_repo1.get_all_students()
+    assert (len(crt_students) == 9)
+
+def test_get_all_pbLab():
+    test_repo1 = setup_test_repo()
+    crt_problems = test_repo1.get_all_problems()
+    assert (type(crt_problems) == list)
+    assert (len(crt_problems) == 10)
+
+    test_repo1.delete_pbLab('3_7')
+    test_repo1.delete_pbLab('9_3')
+
+    crt_problems = test_repo1.get_all_problems()
+    assert (len(crt_problems) == 8)
+
+    test_repo1.store_pbLab(PbLaborator('9_11', 'dgsyuadsa', '5 aprilie'))
+    crt_problems = test_repo1.get_all_problems()
+    assert (len(crt_problems) == 9)
+
+    # not a good test if we don't know if the show is stored on the last position or not
+    # e.g. what is returned from get_all_shows for RepoDict?
+    assert (test_repo1.get_all_problems()[-1].getDescriere() == 'dgsyuadsa')
+    assert (test_repo1.get_all_problems()[-1].getDeadline() == '5 aprilie')
+
+    test_repo1.edit_pbLab('9_11', 'guguasdgsa', '6 aprilie')
+
+    # is it always the case that the updated show keeps its position?
+    # e.g. implement update as delete(old_show) + insert(new_show)
+
+    assert (test_repo1.get_all_problems()[-1].getDescriere() == 'guguasdgsa')
+    assert (test_repo1.get_all_students()[-1].getDeadline() == '6 aprilie')
+    crt_problems = test_repo1.get_all_problems()
+    assert (len(crt_problems) == 9)
+
+
+def test_store_student():
+    test_repo = InMemoryRepository()
+    student1 = Student(617821, 'Mircea', 3)
+    test_repo.store_student(student1)
+
+    crt_students = test_repo.get_all_students()
+    assert (len(crt_students) == 1)
+    student2 = Student(121333, 'Max', 5)
+    test_repo.store_student(student2)
+    crt_students = test_repo.get_all_students()
+    assert (len(crt_students) == 2)
+
+    try:
+        # duplicate id
+        test_repo.store_student(student2)
+        assert False
+    except ValueError:
+        assert True
+
+def test_store_problem():
+    test_repo = InMemoryRepository()
+    problem1 = PbLaborator("1_3", 'asdasad', '3 mai')
+    test_repo.store_pbLab(problem1)
+
+    crt_problems = test_repo.get_all_problems()
+    assert (len(crt_problems) == 1)
+    problem2 = PbLaborator('2_5', 'asadasd', '4 mai')
+    test_repo.store_pbLab(problem2)
+    crt_problems = test_repo.get_all_problems()
+    assert (len(crt_problems) == 2)
+
+    try:
+        # duplicate id
+        test_repo.store_pbLab(problem2)
+        assert False
+    except ValueError:
+        assert True
