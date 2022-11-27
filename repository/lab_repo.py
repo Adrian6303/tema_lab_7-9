@@ -1,5 +1,6 @@
-from domain.entities import Student
-from domain.entities import PbLaborator
+from domain.entities import Student, PbLaborator, Grade
+from exceptions.exceptions import GradeAlreadyAssignedException
+
 
 class InMemoryRepository:
     """
@@ -18,6 +19,7 @@ class InMemoryRepository:
         # vs. [serial1, serial2]
         self.__studenti = []
         self.__probleme = []
+        self.__grades = []
 
     def find_student(self, id):
         """
@@ -45,6 +47,19 @@ class InMemoryRepository:
                 return problema
         return None
 
+    def find_grade(self, g):
+        """
+        Cauta grade in lista de grades
+        :param g: rating-ul cautat
+        :type g: grade
+        :return: grade-ul cautat daca exista in lista, None altfel
+        :rtype: Grade
+        """
+        for grade in self.__grades:
+            if g == grade:
+                return grade
+        return None
+
     def store_student(self, student):
         """
         Adauga un student in lista
@@ -65,6 +80,20 @@ class InMemoryRepository:
         """
         self.__probleme.append(problema)
 
+    def store_grade(self, grade):
+        """
+        Adauga un grade
+        :param grade: evaluarea de adaugat
+        :type grade: Grade
+        :return: -; se adauga grade la lista de evaluari
+        :rtype: -
+        :raises: RatingAlreadyAssignedException daca exista deja rating pentru serialul si clientul dat
+        """
+        g = self.find_grade(grade)
+        if g is not None:
+            raise GradeAlreadyAssignedException()
+        self.__grades.append(grade)
+
     def get_all_students(self):
         """
         Returneaza o lista cu toati studenti existenti
@@ -78,6 +107,14 @@ class InMemoryRepository:
         :rtype: list of objects de tip PbLaborator
         """
         return self.__probleme
+
+    def get_all_grades(self):
+        """
+        Returneaza o lista cu toate evaluarile disponibile
+        :return: lista cu evaluarile disponibile
+        :rtype: list of Rating objects
+        """
+        return self.__grades
 
     def delete_student(self, id):
         """
@@ -96,7 +133,6 @@ class InMemoryRepository:
         self.__studenti.remove(student)
         return student
 
-
     def delete_pbLab(self, nr):
         """
         Sterge problema dupa nr
@@ -113,7 +149,8 @@ class InMemoryRepository:
 
         self.__probleme.remove(problema)
         return problema
-    def edit_student(self,id, nume, grupa):
+
+    def edit_student(self, id, nume, grupa):
         """
                 Modifica datele studentului cu id dat
                 :param id: id dat
@@ -136,7 +173,7 @@ class InMemoryRepository:
 
         return student
 
-    def edit_pbLab(self,nr, descriere, deadline):
+    def edit_pbLab(self, nr, descriere, deadline):
         """
                 Modifica datele problemei cu id dat
                 :param nr: nr dat
@@ -186,8 +223,6 @@ class InMemoryRepository:
         return problema
 
 
-
-
 def setup_test_repo():
     student1 = Student(516728, 'Franz', 1)
     student2 = Student(678192, 'Albert', 12)
@@ -210,9 +245,6 @@ def setup_test_repo():
     pbLab8 = PbLaborator('7_2', 'asdsadasdsai', '4 aprilie')
     pbLab9 = PbLaborator('4_6', 'asdasdasdsas', '9 iulie')
     pbLab10 = PbLaborator('1_8', 'asdsdadaando', '10 octombrie')
-
-
-
 
     test_repo = InMemoryRepository()
     test_repo.store_student(student1)
@@ -258,8 +290,6 @@ def test_find():
     assert (p1 is None)
 
 
-
-
 def test_get_all_students():
     test_repo1 = setup_test_repo()
     crt_students = test_repo1.get_all_students()
@@ -290,6 +320,7 @@ def test_get_all_students():
     assert (test_repo1.get_all_students()[-1].getNume() == 'Raphael')
     crt_students = test_repo1.get_all_students()
     assert (len(crt_students) == 9)
+
 
 def test_get_all_pbLab():
     test_repo1 = setup_test_repo()
@@ -341,6 +372,7 @@ def test_store_student():
         assert False
     except ValueError:
         assert True
+
 
 def test_store_problem():
     test_repo = InMemoryRepository()

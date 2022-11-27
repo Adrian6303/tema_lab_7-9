@@ -1,9 +1,12 @@
 from domain.entities import Student
 from domain.entities import PbLaborator
+from domain.entities import Grade
 from termcolor import colored
+from exceptions.exceptions import *
+
 
 class Console:
-    def __init__(self, srvL, srvS, srvR):
+    def __init__(self, srvL, srvS, srvR, srvG):
         """
         Initializeaza consola
         :type srvL: LabService
@@ -12,6 +15,7 @@ class Console:
         self.__srvL = srvL
         self.__srvS = srvS
         self.__srvR = srvR
+        self.__srvG = srvG
 
     def __print_all(self):
 
@@ -34,6 +38,23 @@ class Console:
                 # print(student)
                 print('Problema nr ' + str(problema.getNrLab_nrPb()) + ': ' + str(
                     problema.getDescriere()) + ', termen limita ' + str(problema.getDeadline()))
+
+    def __print_grades(self, grades_list):
+        """
+        Afiseaza o lista de rating-uri
+
+        """
+
+        if len(grades_list) == 0:
+            print('Nu exista note in lista.')
+        else:
+            print('Lista de grade-uri este:')
+            for grade in grades_list:
+                print('Student: [', colored(str(grade.getStudent().getNume()), 'cyan'), '; ID:',
+                      colored(str(grade.getStudent().getStudentID()), 'cyan'), ']',
+                      'PbLab: [', colored(str(grade.getPbLab().getNrLab_nrPb()), 'magenta'), '; ',
+                      colored(str(grade.getPbLab().getDescriere()), 'magenta'), ']', 'Rating: ', colored(str(
+                        grade.getGrade()), 'blue'))
 
     def __add_student(self):
         """
@@ -167,6 +188,24 @@ class Console:
         except ValueError as ve:
             print(colored(str(ve), 'red'))
 
+    def __assign_grade(self):
+        id_student = int(input('ID student:'))
+        nr_pbLab = input('Numar PbLab')
+        try:
+            grade_val = float(input('Nota problema laborator:'))
+            grade = self.__srvG.create_grade(id_student, nr_pbLab, grade_val)
+            print('Rating-ul', grade, 'a fost adaugat cu succes.')
+        except ValueError:
+            print(colored('Nota trebuie sa fie un numar.', 'red'))
+        except ValidationException as ve:
+            print(colored(str(ve), 'red'))
+        except StudentNotFoundException as ve:
+            print(colored(str(ve), 'red'))
+        except PbLabNotFoundException as ve:
+            print(colored(str(ve), 'red'))
+        except GradeAlreadyAssignedException as ve:
+            print(colored(str(ve), 'red'))
+
     def gestiune_lab_ui(self):
         # command-driven menu (just to have something different)
         # Lab7-9 oricare varianta (print-menu + optiuni/comenzi) este ok
@@ -222,6 +261,12 @@ class Console:
                     self.__random_pbLab()
                 else:
                     print('Comanda invalida.')
+            elif cmd == 'assign grade':
+                self.__assign_grade()
+            elif cmd == 'grade lab':
+                self.__grade_pbLab()
+            elif cmd == 'show grades':
+                self.__print_grades(self.__srvG.get_all_grades())
             elif cmd == 'show all':
                 self.__print_all()
             elif cmd == 'exit':

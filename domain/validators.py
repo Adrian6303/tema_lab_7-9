@@ -1,5 +1,6 @@
 from domain.entities import Student
 from domain.entities import PbLaborator
+from exceptions.exceptions import *
 
 
 class Validator:
@@ -18,9 +19,9 @@ class Validator:
 
     def validate_pbLab(self, pbLab):
         errors = []
-        nr=pbLab.getNrLab_nrPb()
+        nr = pbLab.getNrLab_nrPb()
         try:
-            l=nr.split('_')
+            l = nr.split('_')
             if int(l[0]) < 1 or int(l[0]) > 20:
                 errors.append('Nr laboratorului nu este din intervalul [1,20].')
             if int(l[1]) < 1 or int(l[1]) > 100:
@@ -36,9 +37,16 @@ class Validator:
         if len(errors) > 0:
             errors_string = '\n'.join(errors)
             raise ValueError(errors_string)
+    def validate_grade(self, grade):
+        errors = []
+        if grade.getGrade() < 0 or grade.getGrade() > 10:
+            errors.append('Nota poate fi intre 1 si 10.')
 
+        if len(errors) > 0:
+            # errors_string = '\n'.join(errors)
+            raise ValidationException(errors)
     def validate_StudentID(self, id):
-        errors =[]
+        errors = []
         if id < 100000 or id >= 1000000:
             errors.append('Id-ul studentului trebuie sa aiba mai mult de 6 cifre.')
         if len(errors) > 0:
@@ -46,9 +54,9 @@ class Validator:
             raise ValueError(errors_string)
 
     def validate_NrLab_nrPb(self, nr):
-        errors =[]
+        errors = []
         try:
-            l=nr.split('_')
+            l = nr.split('_')
             if int(l[0]) < 1 or int(l[0]) > 20:
                 errors.append('Nr laboratorului nu este din intervalul [1,20].')
             if int(l[1]) < 1 or int(l[1]) > 100:

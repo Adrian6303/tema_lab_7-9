@@ -1,7 +1,8 @@
-from domain.entities import Student
-from domain.entities import PbLaborator
+from domain.entities import Student, PbLaborator, Grade
+from domain.dtos import PbLabStudentGrade
 from domain.validators import Validator
 from repository.lab_repo import InMemoryRepository
+from exceptions.exceptions import *
 
 
 class StudentService:
@@ -68,7 +69,7 @@ class StudentService:
                 :rtype:Student
                 :raises: ValueError daca noile date nu sunt valide, sau nu exista student cu id dat
                 """
-        s = Student(id, nume,grupa)
+        s = Student(id, nume, grupa)
 
         self.__validator.validate_student(s)
         return self.__repo.edit_student(id, nume, grupa)
@@ -84,7 +85,6 @@ class StudentService:
         """
         self.__validator.validate_StudentID(id)
         return self.__repo.search_student(id)
-
 
 
 class LabService:
@@ -106,7 +106,6 @@ class LabService:
         """
         self.__repo = repo
         self.__validator = validator
-
 
     def add_pbLab(self, nrLab_nrPb, descriere, deadline):
         """
@@ -178,6 +177,80 @@ class LabService:
         return self.__repo.search_pbLab(nr)
 
 
+class GradeService:
+    def __init__(self, repo, validator):
+        self.__repo = repo
+        self.__validator = validator
+
+
+    def create_grade(self, student_id, pbLab_nr, grade_val):
+        """
+        Creeaza un grade
+        :param student_id: id-ul studentului-ului evaluat
+        :type student_id: int
+        :param pbLab_nr: id-ul problemei
+        :type pbLab_nr: str
+        :param grade_val: nota acordata studentului (1-10)
+        :type grade_val: float
+        :return: rating-ul creat cu datele date
+        :rtype: Rating
+        :raises: ShowNotFoundException
+                 ClientNotFoundException
+                 ValidationException
+                 RatingAlreadyAssignedException
+        """
+        student = self.__repo.find_student(student_id)
+        if student is None:
+            raise StudentNotFoundException()
+
+        pb_lab = self.__repo.find_problema(pbLab_nr)
+
+        if pb_lab is None:
+            raise PbLabNotFoundException()
+
+        grade = Grade(student, pb_lab, grade_val)
+        self.__validator.validate_grade(grade)
+        self.__repo.store_grade(grade)
+        return grade
+
+    def get_all_grades(self):
+        return self.__repo.get_all_grades()
+
+    # def get_top_shows(self, pbLab_nr, n=3):
+    #     """
+    #     Returneaza primele 3 show-uri cu cele mai bune rating-uri pentru un client dat
+    #     :param client_id: id-ul clientului
+    #     :type client_id: str
+    #     :param n: numarul de seriale de afisat (default 3)
+    #     :type n: int
+    #     :return: lista cu obiecte DTO ClientShow
+    #     :rtype: list of ClientShow objects
+    #     """
+    #     client = self.__pbLab_repo.find(pbLab_nr)
+    #
+    #     if client is None:
+    #         raise ClientNotFoundException()
+    #
+    #     all_ratings = self.__rating_repo.get_all()
+    #     client_ratings = []
+    #
+    #     for rating in all_ratings:
+    #         if rating.getClient().getId() == client_id:
+    #             client_show_r = ClientShowRating(rating.getClient().getNume(), rating.getSerial().getTitle(),
+    #                                              rating.getNoStars())
+    #             client_ratings.append(client_show_r)
+    #
+    #     # handle the case when we don't have enough ratings - either proceed
+    #     # and return what we have
+    #     # or throw an exception
+    #     client_ratings = sorted(client_ratings, key=lambda x: x.getNoStars(), reverse=True)
+    #     client_ratings = client_ratings[:n]
+    #
+    #     return client_ratings
+    #
+    #
+
+
 def test_add_student():
     repo = InMemoryRepository()
     validator = Validator()
@@ -196,13 +269,14 @@ def test_add_student():
     except ValueError:
         assert True
 
+
 def test_add_probleme():
     repo = InMemoryRepository()
     validator = Validator()
     test_srv = LabService(repo, validator)
 
     added_problem = test_srv.add_pbLab('1_5', 'Sirul lui Fibbonaci', '10 octombrie')
-    assert (added_problem. getNrLab_nrPb() == '1_5')
+    assert (added_problem.getNrLab_nrPb() == '1_5')
     assert (added_problem.getDescriere() == 'Sirul lui Fibbonaci')
     assert (added_problem.getDeadline() == '10 octombrie')
 
