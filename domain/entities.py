@@ -49,7 +49,6 @@ class Student:
             return True
         return False
 
-
     def __str__(self):
         return "ID Student: " + str(self.__lista_stud['studentID']) + '; Nume: ' + str(
             self.__lista_stud['nume']) + '; Grupa: ' + str(self.__lista_stud['grupa'])
@@ -139,7 +138,6 @@ class PbLaborator:
             return True
         return False
 
-
     def __str__(self):
         return "Nr lab si nr problema: " + str(self.__lista_lab['nr']) + '; Descriere: ' + str(
             self.__lista_lab['descriere']) + '; Deadline: ' + str(
@@ -173,6 +171,40 @@ def test_equals_PbLaborator():
 
     PbLaborator3 = PbLaborator('2_10', 'Cautare numere prime', '10 martie')
     assert (PbLaborator1 != PbLaborator3)
+
+
+class Grade:
+    def __init__(self, student, pbLab, grade):
+        self.__student = student
+        self.__pbLab = pbLab
+        self.__grade = grade
+
+    def getStudent(self):
+        return self.__student
+
+    def getPbLab(self):
+        return self.__pbLab
+
+    def getGrade(self):
+        return self.__grade
+
+    def setStudent(self, value):
+        self.__student = value
+
+    def setPbLab(self, value):
+        self.__pbLab = value
+
+    def setGrade(self, value):
+        self.__grade = value
+
+    def __eq__(self, other):
+        if self.__student == other.__student and self.__pbLab == other.__pbLab:
+            return True
+        return False
+
+    def __str__(self):
+        return 'Studentul: [' + str(self.__student.getNume()) + '; ID: ' + str(self.__student.getStudentID()) + ']' + \
+               'PbLab: [' + str(self.__pbLab.getNrLab_nrPb()) + ']' + 'Grade: ' + str(self.__grade)
 
 
 test_create_student()

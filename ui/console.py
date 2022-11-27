@@ -1,6 +1,6 @@
 from domain.entities import Student
 from domain.entities import PbLaborator
-
+from termcolor import colored
 
 class Console:
     def __init__(self, srvL, srvS, srvR):
@@ -53,7 +53,7 @@ class Console:
             print('Studentul ' + added_student.getNume() + ' (ID:' + str(
                 added_student.getStudentID()) + ') a fost adaugat cu succes.')
         except ValueError as ve:
-            print(str(ve))
+            print(colored(str(ve), 'red'))
 
     def __add_pbLab(self):
         nrLab_nrPb = str(input("Numarul laboratorului si problemei:"))
@@ -67,7 +67,7 @@ class Console:
                 added_pbLab.getDescriere()) + '; Termen limita: ' + str(
                 added_pbLab.getDeadline()), '; a fost adaugata cu succes')
         except ValueError as ve:
-            print(str(ve))
+            print(colored(str(ve), 'red'))
 
     def __delete_student(self):
         id = int(input("ID-ul studentului:"))
@@ -77,7 +77,7 @@ class Console:
                 deleted_student.getGrup()) + ' a fost sters cu succes (IDStudent=' + str(
                 deleted_student.getStudentID()) + ').')
         except ValueError as ve:
-            print(str(ve))
+            print(colored(str(ve), 'red'))
 
     def __delete_pbLab(self):
         nr = str(input("Nr lab si pb:"))
@@ -86,7 +86,7 @@ class Console:
             print('Problema nr ' + deleted_pbLab.getNrLab_nrPb() + ' cu termen ' + str(
                 deleted_pbLab.getDeadline()) + ' a fost sters cu succes')
         except ValueError as ve:
-            print(str(ve))
+            print(colored(str(ve), 'red'))
 
     def __edit_student(self):
         id = int(input('ID-ul studentului:'))
@@ -103,7 +103,7 @@ class Console:
             print('Studentul ' + modified_student.getNume() + ' (ID: ' + str(
                 modified_student.getStudentID()) + ') a fost modificat cu succes.')
         except ValueError as ve:
-            print(str(ve))
+            print(colored(str(ve), 'red'))
 
     def __edit_pbLab(self):
         nr = str(input('Nr lab si pb:'))
@@ -115,7 +115,7 @@ class Console:
             print('Problema ' + modified_problem.getNrLab_nrPb() + ' cu termen limita ' + str(
                 modified_problem.getDeadline()) + ' a fost modificat cu succes.')
         except ValueError as ve:
-            print(str(ve))
+            print(colored(str(ve), 'red'))
 
     def __search_student(self):
         id = int(input('ID-ul studentului:'))
@@ -126,7 +126,7 @@ class Console:
                 searched_student.getStudentID()) + ') din grupa ' + str(
                 searched_student.getGrup()))
         except ValueError as ve:
-            print(str(ve))
+            print(colored(str(ve), 'red'))
 
     def __search_pbLab(self):
         nr = input('Nr-ul problemei:')
@@ -136,7 +136,7 @@ class Console:
             print('Problema nr' + searched_problem.getNrLab_nrPb() + ' cu termen limita  ' + str(
                 searched_problem.getDeadline()) + ': ' + str(searched_problem.getDescriere()))
         except ValueError as ve:
-            print(str(ve))
+            print(colored(str(ve), 'red'))
 
     def __random_student(self):
         """
@@ -150,7 +150,7 @@ class Console:
                 print('Studentul ' + random_student.getNume() + ' (ID:' + str(
                     random_student.getStudentID()) + ') a fost adaugat cu succes.')
         except ValueError as ve:
-            print(str(ve))
+            print(colored(str(ve), 'red'))
 
     def __random_pbLab(self):
         """
@@ -165,7 +165,7 @@ class Console:
                     random_problem.getDeadline()) + ' : ' + str(
                     random_problem.getDescriere()))
         except ValueError as ve:
-            print(str(ve))
+            print(colored(str(ve), 'red'))
 
     def gestiune_lab_ui(self):
         # command-driven menu (just to have something different)
